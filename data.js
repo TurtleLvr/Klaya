@@ -57,7 +57,22 @@ function Action(option) {
             Progress = 2;
             document.getElementById("ConstructAssembler").hidden = false;
           }
-          document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chute. These things will gather inscium and chutes for me.`
+          document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chute. These things will gather inscium and chutes for me.`;
+        }
+        break;
+        case "Assembler":
+          let cost = Math.pow(PriceScaling, CrawlerCount);
+          if (ChuteCount >= cost && InsciumCount >= cost) {
+            CrawlerCount += 1;
+            InsciumCount -= cost;
+            ChuteCount -= cost;
+            ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount"]);
+            if (Progress === 1) {
+              Progress = 2;
+              document.getElementById("ConstructAssembler").hidden = false;
+            }
+            document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chute. These things will gather inscium and chutes for me.`
+
         }
         break;
     }
