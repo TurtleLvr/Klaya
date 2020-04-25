@@ -1,6 +1,7 @@
 let ChuteCount = 0;
 let InsciumCount = 0;
 let CrawlerCount = 0;
+let AssemblerCount = 0;
 let ActTime = 500;
 let ResourceTime = 5000
 let Idle = true;
@@ -8,15 +9,15 @@ let PriceScaling = 2;
 let Progress = 0;
 
 document.getElementById("GatherChutes").addEventListener("click", () => {
-  Action("Chute");
+  EveryAction("Chute",false);
 });
 
 document.getElementById("GatherInscium").addEventListener("click", () => {
-  Action("Inscium");
+  EveryAction("Inscium",false);
 });
 
 document.getElementById("ConstructCrawler").addEventListener("click", () => {
-  Action("Crawler");
+  EveryAction("Crawler",false);
 });
 
 setInterval(AddResources, ResourceTime);
@@ -25,10 +26,13 @@ function AddResources() {
   ChuteCount += CrawlerCount;
   InsciumCount += CrawlerCount;
   ValueUpdate(["ChuteCount", "InsciumCount"]);
+  for (AssemblerCount) {
+    EvertAction("Crawler",true);
+}
 }
 
-function Action(option) {
-  if (Idle) {
+function EveryAction(option, mach) {
+  if (Idle || mach) {
     switch (option) {
       case "Chute":
         ChuteCount += 1;
@@ -61,17 +65,15 @@ function Action(option) {
         }
         break;
         case "Assembler":
-          let cost = Math.pow(PriceScaling, CrawlerCount);
-          if (ChuteCount >= cost && InsciumCount >= cost) {
-            CrawlerCount += 1;
+          let cost = Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount));
+          if (ChuteCount >= cost && InsciumCount >= cost && CrawlerCount >= cost) {
+            AssemblerCount += 1;
+            CrawlerCount -= cost;
             InsciumCount -= cost;
             ChuteCount -= cost;
-            ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount"]);
-            if (Progress === 1) {
-              Progress = 2;
-              document.getElementById("ConstructAssembler").hidden = false;
+            ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount", "AssemblerCount"]);
             }
-            document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chute. These things will gather inscium and chutes for me.`
+            document.getElementById("ConstructAssembler").title = `Assemble an assembler. I'll need ${Math.pow(PriceScaling, AssemblerCount)} crawlers, ${Math.pow(PriceScaling, AssemblerCount)} chutes, and ${Math.pow(PriceScaling, AssemblerCount)} inscium. These will turn my raw materials into crawlers, assuming I have enough.`
 
         }
         break;
@@ -96,6 +98,9 @@ function ValueUpdate(id) {
         break;
       case "CrawlerCount":
         string = "Crawlers: " + CrawlerCount;
+        break;
+      case "AssemblerCount":
+        string = "Assemblers: " + AssemblerCount;
         break;
     }
     document.getElementById(element).innerHTML = string;
