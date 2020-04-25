@@ -4,20 +4,23 @@ let CrawlerCount = 0;
 let AssemblerCount = 0;
 let ActTime = 500;
 let ResourceTime = 5000
-let Idle = true;
 let PriceScaling = 2;
 let Progress = 0;
 
 document.getElementById("GatherChutes").addEventListener("click", () => {
-  EveryAction("Chute",false);
+  EveryAction("Chute");
 });
 
 document.getElementById("GatherInscium").addEventListener("click", () => {
-  EveryAction("Inscium",false);
+  EveryAction("Inscium");
 });
 
 document.getElementById("ConstructCrawler").addEventListener("click", () => {
-  EveryAction("Crawler",false);
+  EveryAction("Crawler");
+});
+
+document.getElementById("ConstructAssembler").addEventListener("click", () => {
+  EveryAction("Assembler");
 });
 
 setInterval(AddResources, ResourceTime);
@@ -26,13 +29,14 @@ function AddResources() {
   ChuteCount += CrawlerCount;
   InsciumCount += CrawlerCount;
   ValueUpdate(["ChuteCount", "InsciumCount"]);
-  for (AssemblerCount) {
-    EvertAction("Crawler",true);
-}
+  let AssemblyLeft = AssemblerCount
+  for (;AssemblyLeft > 0;) {
+    EveryAction("Crawler")
+    AssemblyLeft -= 1
+  }
 }
 
-function EveryAction(option, mach) {
-  if (Idle || mach) {
+function EveryAction(option) {
     switch (option) {
       case "Chute":
         ChuteCount += 1;
@@ -51,38 +55,31 @@ function EveryAction(option, mach) {
         }
         break;
       case "Crawler":
-        let cost = Math.pow(PriceScaling, CrawlerCount);
-        if (ChuteCount >= cost && InsciumCount >= cost) {
+        let CostCra = Math.pow(PriceScaling, CrawlerCount);
+        if (ChuteCount >= CostCra && InsciumCount >= CostCra) {
           CrawlerCount += 1;
-          InsciumCount -= cost;
-          ChuteCount -= cost;
+          InsciumCount -= CostCra;
+          ChuteCount -= CostCra;
           ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount"]);
           if (Progress === 1) {
             Progress = 2;
             document.getElementById("ConstructAssembler").hidden = false;
           }
-          document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chute. These things will gather inscium and chutes for me.`;
+          document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.pow(PriceScaling, CrawlerCount)} inscium and ${Math.pow(PriceScaling, CrawlerCount)} chutes. These things will gather inscium and chutes for me.`;
         }
         break;
-        case "Assembler":
-          let cost = Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount));
-          if (ChuteCount >= cost && InsciumCount >= cost && CrawlerCount >= cost) {
+      case "Assembler":
+          let CostAss = Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount));
+          if (ChuteCount >= CostAss && InsciumCount >= CostAss && CrawlerCount >= CostAss) {
             AssemblerCount += 1;
-            CrawlerCount -= cost;
-            InsciumCount -= cost;
-            ChuteCount -= cost;
+            CrawlerCount -= CostAss;
+            InsciumCount -= CostAss;
+            ChuteCount -= CostAss;
             ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount", "AssemblerCount"]);
             }
-            document.getElementById("ConstructAssembler").title = `Assemble an assembler. I'll need ${Math.pow(PriceScaling, AssemblerCount)} crawlers, ${Math.pow(PriceScaling, AssemblerCount)} chutes, and ${Math.pow(PriceScaling, AssemblerCount)} inscium. These will turn my raw materials into crawlers, assuming I have enough.`
-
-        }
+            document.getElementById("ConstructAssembler").title = `Assemble an assembler. I'll need ${Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount))} crawlers, ${Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount))} chutes, and ${Math.floor(Math.pow(PriceScaling+0.5, AssemblerCount))} inscium. These will turn my raw materials into crawlers, assuming I have enough.`
         break;
-    }
-    Idle = false;
-    setTimeout( () => {
-      Idle = true;
-    }, ActTime);
-  }
+        }
 }
 
 function ValueUpdate(id) {
