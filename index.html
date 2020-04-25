@@ -5,16 +5,20 @@
     <title>Klaya</title>
   </head>
   <body>
-    <button id="GatherChutes" title="Gather some chutes. These plants are everywhere but it takes a moment." type="button">Gather Chutes</button>
+  <!-- These are the prestige level one upgrades. There ought to be a page break before the next one. -->
+    <button id="GatherChutes" title="Gather some chutes. These plants are everywhere, but they seem quite sturdy." type="button">Gather Chutes</button>
     <button id="GatherInscium" title="Squish some insects. They contain inscium, which is useful for something or other." type="button">Gather Inscium</button>
     <button id="ConstructCrawler" hidden="true" title="Construct a crawler. I'll need 1 inscium and 1 chute. These things will gather inscium and chutes for me." type="button">Construct Crawler</button>
-    <button id="ConstructAssembler" hidden="true" title="Construct an assembler. I'll need 1 crawler, 1 chute, and 1 inscium. These will turn my raw materials into crawlers, assuming I have enough." type="button">Construct Assembler</button>
+    <button id="ConstructAssembler" hidden="true" title="Assemble an assembler. I'll need 1 crawler, 12 chutes, and 12 inscium. These will turn my raw materials into crawlers, assuming I have enough." type="button">Construct Assembler</button>
+    <button id="ConstructDepot" hidden="true" title="Construct a depot. I'll need 2 crawlers, 35 chutes, and 7 inscium. Depots ought to act as hubs for crawlers, allowing them to be far more efficient." type="button">Construct Depot</button>
+    <button id="ConstructGarishStatue" hidden="true" title="Construct a garish statue. I'll need 2 depots, 2 assemblers, 8 crawlers, 50 chutes, and 120 inscium. I don't know why I know how to make these, they don't seem to serve any purpose. Not for me, at least." type="button">Construct Garish Statue</button>
     <p id="ChuteCount"></p>
     <p id="InsciumCount"></p>
     <p id="CrawlerCount"></p>
     <p id="AssemblerCount"></p>
+    <p id="DepotCount"></p>
+    <p id="GarishStatueCount"></p>
     <br>
-    <p id="Tooltip"></p>
     <script src="./data.js"></script>
   </body>
 </html>
