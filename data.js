@@ -8,47 +8,35 @@ let ActTime = 500;
 let ResourceTime = 5000;
 let PriceScaling = 2;
 let Progress = 0;
+let DepotBonus = 1;
 
-document.getElementById("GatherChutes").addEventListener("click", () => {
-  EveryAction("Chute");
-});
+MassClickListener(["GatherChutes","GatherInscium","ConstructCrawler","ConstructAssembler","ConstructDepot","ConstructGarishStatue"])
 
-document.getElementById("GatherInscium").addEventListener("click", () => {
-  EveryAction("Inscium");
-});
-
-document.getElementById("ConstructCrawler").addEventListener("click", () => {
-  EveryAction("Crawler");
-});
-
-document.getElementById("ConstructAssembler").addEventListener("click", () => {
-  EveryAction("Assembler");
-});
-
-document.getElementById("ConstructDepot").addEventListener("click", () => {
-  EveryAction("Depot");
-});
-
-document.getElementById("ConstructGarishStatue").addEventListener("click", () => {
-  EveryAction("GarishStatue");
-});
+function MassClickListener(id) { //This function adds all of the event listeners at the start of the function.
+  for (element of id) {
+    document.getElementById(element).addEventListener("click", (listener) => {
+      EveryAction(listener.srcElement.id);
+    });
+  }
+}
 
 setInterval(AddResources, ResourceTime);
 
 function AddResources() {
-  ChuteCount += CrawlerCount*(DepotCount + 1);
-  InsciumCount += CrawlerCount*(DepotCount + 1);
+  let GatheringGain = Math.floor(CrawlerCount*(Math.pow(DepotCount, DepotBonus) + 1));
+  ChuteCount += GatheringGain;
+  InsciumCount += GatheringGain;
   ValueUpdate(["ChuteCount", "InsciumCount"]);
   let AssemblyLeft = AssemblerCount
   for (;AssemblyLeft > 0;) {
-    EveryAction("Crawler")
+    EveryAction("ConstructCrawler")
     AssemblyLeft -= 1
   }
 }
 
 function EveryAction(option) {
     switch (option) {
-      case "Chute":
+      case "GatherChutes":
         ChuteCount += 1;
         ValueUpdate(["ChuteCount"]);
         if (Progress === 0 && InsciumCount >= 1) {
@@ -56,7 +44,7 @@ function EveryAction(option) {
           document.getElementById("ConstructCrawler").hidden = false;
         }
         break;
-      case "Inscium":
+      case "GatherInscium":
         InsciumCount += 1;
         ValueUpdate(["InsciumCount"]);
         if (Progress === 0 && ChuteCount >= 1) {
@@ -64,21 +52,21 @@ function EveryAction(option) {
           document.getElementById("ConstructCrawler").hidden = false;
         }
         break;
-      case "Crawler":
+      case "ConstructCrawler":
         let CostCra = Math.pow(PriceScaling, CrawlerCount);
         if (ChuteCount >= CostCra && InsciumCount >= CostCra) {
           CrawlerCount += 1;
           InsciumCount -= CostCra;
           ChuteCount -= CostCra;
           ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount"]);
+          TooltipUpdate(["ConstructCrawler"]);
           if (Progress === 1) {
             Progress = 2;
             document.getElementById("ConstructAssembler").hidden = false;
           }
-          document.getElementById("ConstructCrawler").title = `Construct a crawler. I'll need ${Math.floor(Math.pow(PriceScaling, CrawlerCount))} inscium and ${Math.floor(Math.pow(PriceScaling, CrawlerCount))} chutes. These things will gather inscium and chutes for me.`;
         }
         break;
-      case "Assembler":
+      case "ConstructAssembler":
         let CostAss = Math.floor(Math.pow(PriceScaling*1.25, AssemblerCount));
         if (ChuteCount >= CostAss*12 && InsciumCount >= CostAss*12 && CrawlerCount >= CostAss) {
           AssemblerCount += 1;
@@ -90,10 +78,10 @@ function EveryAction(option) {
             document.getElementById("ConstructDepot").hidden = false;
           }
           ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount", "AssemblerCount"]);
+          TooltipUpdate(["ConstructCrawler", "ConstructAssembler"]);
           }
-          document.getElementById("ConstructAssembler").title = `Assemble an assembler. I'll need ${Math.floor(Math.pow(PriceScaling*1.25, AssemblerCount))} crawlers, ${Math.floor(Math.pow(PriceScaling*1.25, AssemblerCount))*12} chutes, and ${Math.floor(Math.pow(PriceScaling*1.25, AssemblerCount))*12} inscium. These will turn my raw materials into crawlers, assuming I have enough.`
         break;
-      case "Depot":
+      case "ConstructDepot":
         let CostDep = Math.floor(Math.pow(PriceScaling*1.5, DepotCount));
         if (ChuteCount >= CostDep*35 && InsciumCount >= CostDep*7 && CrawlerCount >= CostDep*2) {
           DepotCount += 1;
@@ -105,10 +93,10 @@ function EveryAction(option) {
             document.getElementById("ConstructGarishStatue").hidden = false;
           }
           ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount", "DepotCount"]);
+          TooltipUpdate(["ConstructCrawler", "ConstructDepot",]);
           }
-          document.getElementById("ConstructDepot").title = `Construct a depot. I'll need ${Math.floor(Math.pow(PriceScaling*1.5, DepotCount))*2} crawlers, ${Math.floor(Math.pow(PriceScaling*1.5, DepotCount))*35} chutes, and ${Math.floor(Math.pow(PriceScaling*1.5, DepotCount))*7} inscium. Depots ought to act as hubs for crawlers, allowing them to be far more efficient.`
         break;
-      case "GarishStatue":
+      case "ConstructGarishStatue":
         let CostGar = Math.floor(Math.pow(PriceScaling, GarishStatueCount));
         if (DepotCount >= CostGar*2 && AssemblerCount >= CostGar*2 && CrawlerCount >= CostGar*8 && ChuteCount >= CostGar*50 && InsciumCount >= CostGar*120) {
           GarishStatueCount += 1;
@@ -118,14 +106,13 @@ function EveryAction(option) {
           InsciumCount -= CostGar*120;
           ChuteCount -= CostGar*50;
           ValueUpdate(["CrawlerCount", "ChuteCount", "InsciumCount", "AssemblerCount", "DepotCount", "GarishStatueCount"]);
+          TooltipUpdate(["ConstructCrawler", "ConstructAssembler", "ConstructDepot", "ConstructGarishStatue"]);
           }
-          document.getElementById("ConstructGarishStatue").title = `Construct a garish statue. I'll need ${Math.floor(Math.pow(PriceScaling, GarishStatueCount))*2} depots, ${Math.floor(Math.pow(PriceScaling, GarishStatueCount))*2} assemblers, ${Math.floor(Math.pow(PriceScaling, GarishStatueCount))*8} crawlers, ${Math.floor(Math.pow(PriceScaling, GarishStatueCount))*50} chutes, and ${Math.floor(Math.pow(PriceScaling, GarishStatueCount))*120} inscium. I don't know why I know how to make these, they don't seem to serve any purpose. Not for me, at least.`
       break;
-
         }
 }
 
-function ValueUpdate(id) {
+function ValueUpdate(id) { //This function updates values.
   let string = "";
 
   for (element of id) {
@@ -150,5 +137,31 @@ function ValueUpdate(id) {
         break;
     }
     document.getElementById(element).innerHTML = string;
+  }
+}
+
+function TooltipUpdate(id) { //This function updates tooltips.
+let string = "";
+let BaseCost = 0;
+for (element of id) {
+  switch(element) {
+    case "ConstructCrawler":
+      BaseCost = Math.floor(Math.pow(PriceScaling, CrawlerCount));
+      string = `Construct a crawler. I'll need ${BaseCost} inscium and ${BaseCost} chutes. These things will gather inscium and chutes for me.`
+      break;
+    case "ConstructAssembler":
+      BaseCost = Math.floor(Math.pow(PriceScaling*1.25, AssemblerCount));
+      string = `Assemble an assembler. I'll need ${BaseCost} crawlers, ${BaseCost*12} chutes, and ${BaseCost*12} inscium. These will turn my raw materials into crawlers, assuming I have enough.`
+      break;
+    case "ConstructDepot":
+      BaseCost = Math.floor(Math.pow(PriceScaling*1.5, DepotCount));
+      string = `Construct a depot. I'll need ${BaseCost*2} crawlers, ${BaseCost*35} chutes, and ${BaseCost*7} inscium. Depots ought to act as hubs for crawlers, allowing them to be far more efficient.`
+      break;
+    case "ConstructGarishStatue":
+      BaseCost = Math.floor(Math.pow(PriceScaling, GarishStatueCount));
+      string = `Construct a garish statue. I'll need ${BaseCost*2} depots, ${BaseCost*2} assemblers, ${BaseCost*8} crawlers, ${BaseCost*50} chutes, and ${BaseCost*120} inscium. I don't know why I know how to make these, they don't seem to serve any purpose. Not for me, at least.`
+      break;
+    }
+    document.getElementById(element).title = string;
   }
 }
