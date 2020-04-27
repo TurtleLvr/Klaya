@@ -38,17 +38,6 @@ class Item {
   }
 }
 
-class Jouney {
-  constructor(Count,Name) {
-    this.Count = Count;
-    this.Name = Name;
-  }
-  PriceDetermination() {
-    return Math.floor(Math.pow(JourneyPriceScaling, this.Count));
-  }
-}
-
-
 const Inscium = new Item(0, 0, "Inscium", "Gather some chutes. These plants are everywhere, but they seem quite sturdy.", [], [],false);
 const Chute = new Item(0, 0, "Chutes", "Squish some insects. They contain inscium, which is useful for something or other.", [], [],false);
 const Crawler = new Item(0, 1, "Crawlers", "Construct a crawler. I'll need #0 inscium and #1 chutes. These things will gather inscium and chutes for me.", [1, 1],[Inscium,Chute]);
@@ -180,6 +169,8 @@ function ExplorationUpgradeUpdate() {
   ResourceTime = Math.floor(5000*Math.pow(0.625,Haste.Count));
   PriceScaling = 1+Math.pow(0.9375,Nature.Count);
   DepotBonus = Math.pow(1.125,Harmony.Count);
+  clearInterval(Income)
+  Income = setInterval(AddResources, ResourceTime)
 }
 
 /*
