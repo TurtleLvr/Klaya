@@ -70,6 +70,7 @@ const Field = new Item(0, 1, "Fields","Plant a field of cleerock. This will requ
 const Conjuror = new Item(0, 1.5, "Conjurors","Assemble a conjuror. I'll need #0 sigil and #1 cleerock. These will produce additional chutes and inscium based on how many I already have.",[1,3],[Sigil,Cleerock],false,Third);
 const Manufacturer = new Item(0, 10, "Manufacturers","Assemble a manufacturer. I'll need #0 sigils and #1 cleerock. These will build depots and assemblers for me.",[2,5],[Sigil,Cleerock],false,Third);
 const Analyzer = new Item(0, 3, "Analyzers","Assemble an analyzer. I'll need #0 cleerock, #1 sigils, and #2 shavings. These will think for me, producing knowledge.",[2,1,20],[Cleerock,Sigil,Shavings],false,Third);
+
 const Insight = new Item(0, 0, "Insights","",[],[],false,Third);
 
 
