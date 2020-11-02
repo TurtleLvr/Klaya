@@ -5,12 +5,10 @@
     <title>Klaya</title>
   </head>
   <body>
-    <button id="Chutes_Button" title="Gather some chutes. These plants are everywhere, but they seem quite sturdy." type="button">Gather Chutes</button>
-    <button id="Inscium_Button" title="Squish some insects. They contain inscium, which is useful for something or other." type="button">Gather Inscium</button>
-    <button id="Crawlers_Button" hidden="true" title="Construct a crawler. I'll need 1 inscium and 1 chute. These things will gather inscium and chutes for me." type="button">Construct Crawler</button>
-    <button id="Assemblers_Button" hidden="true" title="Assemble an assembler. I'll need 1 crawler, 12 chutes, and 12 inscium. These will turn my raw materials into crawlers, assuming I have enough." type="button">Construct Assembler</button>
-    <button id="Depots_Button" hidden="true" title="Construct a depot. I'll need 2 crawlers, 35 chutes, and 7 inscium. Depots ought to act as hubs for crawlers, allowing them to be far more efficient." type="button">Construct Depot</button>
-    <button id="Garish_Statues_Button" hidden="true" title="Sculpt a garish statue. I'll need 2 depots, 2 assemblers, 8 crawlers, 50 chutes, and 120 inscium. I don't know why I know how to make these, they don't seem to serve any purpose. Not for me, at least." type="button">Construct Garish Statue</button>
+    <button id="Crawlers_Button" type="button">Construct Crawler</button>
+    <button id="Assemblers_Button" hidden="true" type="button">Construct Assembler</button>
+    <button id="Depots_Button" hidden="true" type="button">Construct Depot</button>
+    <button id="Garish_Statues_Button" hidden="true" type="button">Construct Garish Statue</button>
     <p id="Chutes"></p>
     <p id="Inscium"></p>
     <p id="Crawlers"></p>
@@ -18,37 +16,40 @@
     <p id="Depots"></p>
     <p id="Garish_Statues"></p>
     <br>
-    <button id="Exploration_Button" hidden="true" title="It's time for me to move on, for one reason or another. This place has become so cluttered that I can hardly stand it." type="button">Abandon Possessions</button>
-    <p id="Exploration"></p>
+    <button id="Exploration_Button" hidden="true" type="button">Abandon Possessions</button>
     <br>
-    <button id="Nature_Button" hidden="true" title="This require #1 exploration. On my journies, I have found lands with bountiful flora and fauna. As there is plenty of room, things I build will not increase in cost nearly as quickly." type="button">Nature</button>
-    <button id="Harmony_Button" hidden="true" title="This require #1 exploration. On my journies, I have found  Each depot will make other depots more efficient, here." type="button">Harmony</button>
-    <button id="Haste_Button" hidden="true" title="This require #1 exploration. On my journies, I have found a place with an air of vigor, wherein I feel time itself moving faster. All things but myself will produce faster, here." type="button">Haste</button>
-    <button id="Golems_Button" hidden="true" title="This require #1 exploration. On my journies, I have found another like myself. He will gather materials and help administrate crawlers." type="button">Golems</button>
+    <button id="Nature_Button" hidden="true" type="button">Nature</button>
+    <button id="Harmony_Button" hidden="true" type="button">Harmony</button>
+    <button id="Haste_Button" hidden="true" type="button">Haste</button>
+    <button id="Golems_Button" hidden="true" type="button">Golems</button>
+    <p id="Exploration" hidden="true"></p>
     <p id="Nature"></p>
     <p id="Harmony"></p>
     <p id="Haste"></p>
     <p id="Golems"></p>
     <br>
-    <button id="Strange_Boxes_Button" hidden="true" title="On my travels, I have found an endless sea of a material which resembles my flesh. Upon dipping my foot in, I sink slightly. I shall meet my fears and become one with the desert." type="button">Cast Myself Into The Desert</button>
+    <button id="Strange_Boxes_Button" hidden="true" type="button">Cast Myself Into The Desert</button>
     <br>
-    <button id="Disassemble_Button" hidden="true" title="I have awoken in a new land. I remember nothing of what happened after entering the desert. I may as well disassemble this box." type="button">Disassemble</button>
-    <button id="Cleerock_Button" hidden="true" title="Integrate 5 shavings together to make some Cleerock." type="button">Mesh Cleerock</button>
+    <button id="Disassemble_Button" hidden="true" type="button">Disassemble</button>
+    <button id="Cleerock_Button" hidden="true" type="button">Mesh Cleerock</button>
     <br>
-    <button id="Fields_Button" hidden="true" title="Plant a field of cleerock. This will require 1 sigil and 1 cleerock. This field will yield shavings after a time." type="button">Plant Cleerock</button>
-    <button id="Conjurors_Button" hidden="true" title="Assemble a conjuror. I'll need 1 sigil and 3 cleerock. These will produce additional chutes and inscium based on how many I already have." type="button">Assemble Conjuror</button>
-    <button id="Manufacturers_Button" hidden="true" title="Assemble a manufacturer. I'll need 2 sigils and 5 cleerock. These will build depots and assemblers for me." type="button">Assemble Manufacturer</button>
-    <button id="Analyzers_Button" hidden="true" title="Assemble an analyzer. I'll need 2 cleerock, 1 sigils, and 20 shavings. These will think for me, producing knowledge." type="button">Assemble Analyzer</button>
-    <button id="Shavings_Button" hidden="true" title="" type="button"></button>
-    <button id="Insights_Button" hidden="true" title="" type="button"></button>
-    <button id="Sigils_Button" hidden="true" title="" type="button"></button>
+    <button id="Fields_Button" hidden="true" type="button">Sow Field</button>
+    <button id="Explorers_Button" hidden="true" type="button">Assemble Explorer</button>
+    <button id="Conjurors_Button" hidden="true" type="button">Assemble Conjuror</button>
+    <button id="Manufacturers_Button" hidden="true" type="button">Assemble Manufacturer</button>
+    <button id="Analyzers_Button" hidden="true" type="button">Assemble Analyzer</button>
+    <button id="Shavings_Button" hidden="true" type="button"></button>
+    <button id="Insights_Button" hidden="true" type="button"></button>
+    <button id="Sigils_Button" hidden="true" type="button"></button>
     <p id="Strange_Boxes"></p>
     <p id="Shavings" hidden="true"></p>
     <p id="Cleerock"></p>
     <p id="Sigils"></p>
     <p id="Insights" hidden="true"></p>
     <p id="Fields"></p>
+    <p id="Cleerock"></p>
     <p id="Conjurors"></p>
+    <p id="Explorers"></p>
     <p id="Manufacturers"></p>
     <p id="Analyzers"></p>
     <script src="./data.js"></script>

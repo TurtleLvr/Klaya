@@ -12,14 +12,14 @@ class PriceScaleSource {
 
 class Item {
   constructor(Count, Costscaling, Name, Tooltip, CostMultiplier, Components, UpgUpdate,PriceScaleType) {
-    this.Count = Count;
-    this.Costscaling = Costscaling;
-    this.Name = Name;
-    this.Tooltip = Tooltip;
-    this.CostMultiplier = CostMultiplier;
-    this.Components = Components;
-    this.UpgUpdate = UpgUpdate;
-    this.PriceScaleType = PriceScaleType;
+    this.Count = Count; /*This specifies how many of any given item the player has. It always starts at 0.*/
+    this.Costscaling = Costscaling; /*The default is 1, and this should not be below 1. This multiplies the cost scaling.*/
+    this.Name = Name; /*This is referenced in respect to the html a lot. It ought to be the plural form of the variable name.*/
+    this.Tooltip = Tooltip; /*Self explanitory, but format matters.*/
+    this.CostMultiplier = CostMultiplier; /**/
+    this.Components = Components; /**/
+    this.UpgUpdate = UpgUpdate; /**/
+    this.PriceScaleType = PriceScaleType; /**/
   }
 
   get PriceBase() {
@@ -45,37 +45,36 @@ class Item {
   }
 }
 
-const First = new PriceScaleSource(2)
-const Second = new PriceScaleSource(3)
-const Third = new PriceScaleSource(1.5)
+const Zeroth = new PriceScaleSource(1.10);
+const First = new PriceScaleSource(2);
+const Second = new PriceScaleSource(3);
+const Third = new PriceScaleSource(1.5);
 
-const Inscium = new Item(0, 0, "Inscium", "Squish some insects. They contain inscium, which is useful for something or other.", [], [],false,First);
-const Chute = new Item(0, 0, "Chutes", "Gather some chutes. These plants are everywhere, but they seem quite sturdy.", [], [],false,First);
-const Crawler = new Item(0, 1, "Crawlers", "Construct a crawler. I'll need #0 inscium and #1 chutes. These things will gather inscium and chutes for me.", [1, 1],[Inscium,Chute],false,First);
-const Assembler = new Item(0, 1.25, "Assemblers", "Assemble an assembler. I'll need #0 crawler, #1 chutes, and #2 inscium. These will turn my raw materials into crawlers, assuming I have enough.", [1, 12, 12],[Crawler,Chute,Inscium],false,First);
-const Depot = new Item(0, 1.5, "Depots","Construct a depot. I'll need #0 crawlers, #1 chutes, and #2 inscium. Depots ought to act as hubs for crawlers, allowing them to be far more efficient.", [2, 35, 7],[Crawler,Chute,Inscium],false,First);
-const GarishStatue = new Item(0, 1, "Garish_Statues","Sculpt a garish statue. I'll need #0 depots, #1 assemblers, #2 crawlers, #3 chutes, and #4 inscium. I don't know why I know how to make these, they don't seem to serve any purpose. Not for me, at least.",[2,2,8,50,120],[Depot,Assembler,Crawler,Chute,Inscium],false,First);
+const Chute = new Item(0, 0, "Chutes", "Time", [], [],false,Zeroth);
+const Crawler = new Item(1, 1, "Crawlers", "#0 chutes.", [1],[Chute],false,Zeroth);
+const Assembler = new Item(0, 1.25, "Assemblers", "#0 crawlers and #1 chutes.", [1, 12],[Crawler,Chute],false,First);
+const Depot = new Item(0, 1.5, "Depots","#0 crawlers and #1 chutes.", [2, 20],[Crawler,Chute],false,First);
+const GarishStatue = new Item(0, 1, "Garish_Statues","#0 depots, #1 assemblers, #2 crawlers, and #3 chutes.",[2,2,10,100],[Depot,Assembler,Crawler,Chute],false,First);
 
-const Exploration = new Item(0, 0, "Exploration","It's time for me to move on, for one reason or another. This place has become so cluttered that I can hardly stand it.",[],[],false,Second);
-const Nature = new Item(0, 1, "Nature","This require #0 exploration. On my journies, I have found lands with bountiful flora and fauna. As there is plenty of room, things I build will not increase in cost nearly as quickly.",[1],[Exploration],true,Second);
-const Harmony = new Item(0, 1, "Harmony","This require #0 exploration. On my journies, I have found  Each depot will make other depots more efficient, here.",[1],[Exploration],true,Second);
-const Haste = new Item(0, 1, "Haste","This require #0 exploration. On my journies, I have found a place with an air of vigor, wherein I feel time itself moving faster. All things but myself will produce faster, here.",[1],[Exploration],true,Second);
-const Golem = new Item(0, 1, "Golems","This require #0 exploration. On my journies, I have found another like myself. He will gather materials and help administrate crawlers.",[1],[Exploration],false,Second);
+const Exploration = new Item(0, 0, "Exploration","All my possessions.",[],[],false,Second);
+const Nature = new Item(0, 1, "Nature","#0 exploration. Things I build will not increase in cost nearly as quickly.",[1],[Exploration],true,Second);
+const Harmony = new Item(0, 1, "Harmony","#0 exploration. Each depot will make other depots more efficient, here.",[1],[Exploration],true,Second);
+const Haste = new Item(0, 1, "Haste","#0 exploration. All things will produce faster, here.",[1],[Exploration],true,Second);
+const Golem = new Item(0, 1, "Golems","#0 exploration. He will gather materials and help administrate crawlers.",[1],[Exploration],false,Second);
 
-const StrangeBox = new Item(0, 0, "Strange_Boxes","On my travels, I have found an endless sea of a material which resembles my flesh. Upon dipping my foot in, I sink slightly. I shall meet my fears and become one with the desert.",[],[],true,Third);
-const Sigil = new Item(0, 0, "Sigils","",[],[],false,Third);
-const Shavings = new Item(0, 1, "Shavings","",[],[],false,Third);
-const Cleerock = new Item(0, 1, "Cleerock","Integrate #0 shavings together to make some Cleerock.",[5],[Shavings],false,Third);
-const Field = new Item(0, 1, "Fields","Plant a field of cleerock. This will require #0 sigil and #1 cleerock. This field will yield shavings after a time.",[1,1],[Sigil,Cleerock],false,Third);
-const Conjuror = new Item(0, 1.5, "Conjurors","Assemble a conjuror. I'll need #0 sigil and #1 cleerock. These will produce additional chutes and inscium based on how many I already have.",[1,3],[Sigil,Cleerock],false,Third);
-const Manufacturer = new Item(0, 10, "Manufacturers","Assemble a manufacturer. I'll need #0 sigils and #1 cleerock. These will build depots and assemblers for me.",[2,5],[Sigil,Cleerock],false,Third);
-const Analyzer = new Item(0, 3, "Analyzers","Assemble an analyzer. I'll need #0 cleerock, #1 sigils, and #2 shavings. These will think for me, producing knowledge.",[2,1,20],[Cleerock,Sigil,Shavings],false,Third);
+const StrangeBox = new Item(0, 0, "Strange_Boxes","My knowledge.",[],[],true,Third);
+const Sigil = new Item(0, 0, "Sigils","A box.",[],[],false,Third);
+const Shavings = new Item(0, 1, "Shavings","Time.",[],[],false,Third);
+const Cleerock = new Item(0, 1, "Cleerock","#0 shavings.",[5],[Shavings],false,Third);
+const Field = new Item(0, 1, "Fields","#0 sigil and #1 cleerock.",[1,1],[Sigil,Cleerock],false,Third);
+const Explorer = new Item(0, 2, "Explorers","#0 sigils.",[5],[Sigil],false,Third);
+const Conjuror = new Item(0, 1.5, "Conjurors","#0 sigils and #1 cleerock.",[1,3],[Sigil,Cleerock],false,Third);
+const Manufacturer = new Item(0, 10, "Manufacturers","#0 sigils and #1 cleerock.",[2,5],[Sigil,Cleerock],false,Third);
+const Analyzer = new Item(0, 3, "Analyzers","#0 cleerock, #1 sigils, and #2 shavings.",[2,1,20],[Cleerock,Sigil,Shavings],false,Third);
 
-const Insight = new Item(0, 0, "Insights","",[],[],false,Third);
+const Insight = new Item(0, 0, "Insights","Time.",[],[],false,Third);
 
 
-document.getElementById("Chutes_Button").addEventListener("click", () => {ConstructionFunction(Chute);});
-document.getElementById("Inscium_Button").addEventListener("click", () => {ConstructionFunction(Inscium);});
 document.getElementById("Crawlers_Button").addEventListener("click", () => {ConstructionFunction(Crawler);});
 document.getElementById("Assemblers_Button").addEventListener("click", () => {ConstructionFunction(Assembler);});
 document.getElementById("Depots_Button").addEventListener("click", () => {ConstructionFunction(Depot);});
@@ -94,6 +93,7 @@ document.getElementById("Disassemble_Button").addEventListener("click", () => {D
 document.getElementById("Cleerock_Button").addEventListener("click", () => {ConstructionFunction(Cleerock);});
 
 document.getElementById("Fields_Button").addEventListener("click", () => {ConstructionFunction(Field);});
+document.getElementById("Explorers_Button").addEventListener("click", () => {ConstructionFunction(Explorer);});
 document.getElementById("Conjurors_Button").addEventListener("click", () => {ConstructionFunction(Conjuror);});
 document.getElementById("Manufacturers_Button").addEventListener("click", () => {ConstructionFunction(Manufacturer);});
 document.getElementById("Analyzers_Button").addEventListener("click", () => {ConstructionFunction(Analyzer);});
@@ -105,8 +105,7 @@ let Crop = setInterval(Harvest, FieldTime);
 function AddResources() {
   let GatheringGain = Math.floor(Crawler.Count*(Math.pow(Depot.Count+Golem.Count, DepotBonus) + 1))+(Golem.Count*12);
   Chute.Count += GatheringGain;
-  Inscium.Count += GatheringGain;
-  ValueUpdate([Chute,Inscium]);
+  ValueUpdate([Chute]);
   for (let i = Assembler.Count; i > 0; i--) {
     ConstructionFunction(Crawler);
   }
@@ -118,82 +117,95 @@ function AddResources() {
 
 function Harvest() {
   Shavings.Count += Field.Count;
-  Chute.Count += Math.round(Chute.Count*Conjuror.Count/100)
-  Inscium.Count += Math.round(Inscium.Count*Conjuror.Count/100)
+  Chute.Count += Math.round(Math.pow(Chute.Count,0.5))
   Insight.Count += Analyzer.Count
-  ValueUpdate([Chute,Inscium,Shavings,Insight]);
+  Exploration.Count += GarishStatue.Count*Explorer.Count
+  ValueUpdate([Chute,Shavings,Insight,Exploration]);
 }
 
 function ProgressQuery() { //This function checks if you have met the requirements to progress and if you have it progresses you.
 let Passing = false;
   switch(Progress) {
     case 0:
-      if (Chute.Count > 0 && Inscium.Count > 0) {
-        document.getElementById("Crawlers_Button").hidden = false;
-        Passing = true;
-      }
-      break;
-    case 1:
-      if (Crawler.Count > 0) {
+      if (Crawler.Count > 1) {
         document.getElementById("Assemblers_Button").hidden = false;
         document.getElementById("Depots_Button").hidden = false;
+        ValueUpdate([Assembler,Depot]);
         Passing = true;
-      }
+      };
       break;
-    case 2:
+    case 1:
       if (Assembler.Count > 0 && Depot.Count > 0) {
         document.getElementById("Garish_Statues_Button").hidden = false;
+        ValueUpdate([GarishStatue]);
         Passing = true;
-        }
+      };
       break;
-    case 3:
+    case 2:
       if (GarishStatue.Count > 0) {
         document.getElementById("Exploration_Button").hidden = false;
+        document.getElementById("Exploration").hidden = false;
+        ValueUpdate([Exploration]);
         Passing = true;
-        }
+      };
       break;
-    case 4:
+    case 3:
       if (Exploration.Count > 0) {
         document.getElementById("Nature_Button").hidden = false;
         document.getElementById("Harmony_Button").hidden = false;
         document.getElementById("Haste_Button").hidden = false;
         document.getElementById("Golems_Button").hidden = false;
+        ValueUpdate([Nature,Harmony,Haste,Golem]);
         Passing = true;
-        }
+      };
       break;
-    case 5:
+    case 4:
       if (Haste.Count + Nature.Count + Harmony.Count + Golem.Count > 3) {
         document.getElementById("Strange_Boxes_Button").hidden = false;
+        ValueUpdate([StrangeBox]);
         Passing = true;
-        }
+      };
       break;
-    case 6:
+    case 5:
       if (StrangeBox.Count > 0) {
         document.getElementById("Disassemble_Button").hidden = false;
+        ValueUpdate([StrangeBox]);
         Passing = true;
-        }
+      };
       break;
-    case 7:
+    case 6:
       if (Sigil.Count > 0) {
         document.getElementById("Cleerock_Button").hidden = false;
         document.getElementById("Fields_Button").hidden = false;
+        ValueUpdate([Cleerock,Field]);
         Passing = true;
-        }
+      };
       break;
-    case 8:
+    case 7:
       if (Field.Count > 0) {
         document.getElementById("Shavings").hidden = false;
+        document.getElementById("Explorers_Button").hidden = false;
         document.getElementById("Conjurors_Button").hidden = false;
         document.getElementById("Manufacturers_Button").hidden = false;
         document.getElementById("Analyzers_Button").hidden = false;
+        ValueUpdate([Shavings,Conjuror,Manufacturer,Analyzer,Explorer]);
         Passing = true;
-        }
+      };
+      break;
+    case 8:
+      if (Explorer.Count > 0) {
+        Exploration.Tooltip = "Time and Statues."
+        document.getElementById("Exploration_Button").hidden = true;
+        ValueUpdate([Insight,Exploration])
+        Passing = true;
+      };
       break;
     case 9:
       if (Analyzer.Count > 0) {
         document.getElementById("Insights").hidden = false;
+        ValueUpdate([Insight])
         Passing = true;
-        }
+    };
       break;
   }
   if(Passing) {
@@ -206,17 +218,13 @@ function ValueUpdate(objects) {
   let string = "";
 
   for (object of objects) {
-    string = object.Name + ": " + object.Count;
+    string = object.Name + ": " + object.Count + ". Cost: " + object.CurrentTooltip;
     document.getElementById(object.Name).innerHTML = string;
   }
 }
 
 /* Called like: TooltipUpdate([Crawler, Assembler, ...]); */
-function TooltipUpdate(objects) {
-  for (object of objects) {
-    document.getElementById(object.Name + "_Button").title = object.CurrentTooltip;
-  }
-}
+
 
 function ConstructionFunction(builtitem) {
   for(object of builtitem.Components) { /* This part of the function checks each component to ensure there is enough, and stops the function if there is not. */
@@ -227,21 +235,18 @@ function ConstructionFunction(builtitem) {
   }
   builtitem.Count += 1;
   ValueUpdate(builtitem.Components.concat([builtitem]));
-  TooltipUpdate(builtitem.Components.concat([builtitem]));
   ProgressQuery();
   if(builtitem.UpgUpdate){ExplorationUpgradeUpdate()};
 }
 
 function Abandon() {
   Exploration.Count += GarishStatue.Count;
-  Inscium.Count = 0;
   Chute.Count = 0;
-  Crawler.Count = 0;
+  Crawler.Count = 1;
   Assembler.Count = 0;
   Depot.Count = 0;
   GarishStatue.Count = 0;
-  ValueUpdate([Chute,Inscium,Crawler,Assembler,Depot,GarishStatue,Exploration]);
-  TooltipUpdate([Chute,Inscium,Crawler,Assembler,Depot,GarishStatue,Nature,Harmony,Haste,Golem]);
+  ValueUpdate([Chute,Crawler,Assembler,Depot,GarishStatue,Exploration]);
   ProgressQuery();
 }
 
@@ -249,8 +254,9 @@ function ExplorationUpgradeUpdate() {
   ResourceTime = Math.floor(5000*Math.pow(0.625,Haste.Count));
   First.ExponentBase= 1+Math.pow(0.9375,Nature.Count);
   DepotBonus = Math.pow(1.0625,Harmony.Count);
-  clearInterval(Income)
-  Income = setInterval(AddResources, ResourceTime)
+  clearInterval(Income);
+  Income = setInterval(AddResources, ResourceTime);
+  ValueUpdate([Chute,Crawler,Assembler,Depot,GarishStatue])
 }
 
 function Disassembly() {
@@ -271,7 +277,8 @@ function CastSelfIntoDesert() {
   Haste.Count = 0
   Exploration.Count = 0
   ExplorationUpgradeUpdate()
-  ValueUpdate([Haste,Exploration,Nature,Harmony,Golem]);
-  TooltipUpdate([Haste,Exploration,Nature,Harmony,Golem]);
+  ValueUpdate([Haste,Exploration,Nature,Harmony,Golem,StrangeBox]);
   ProgressQuery();
 }
+
+ValueUpdate([Chute,Crawler])
