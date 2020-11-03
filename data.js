@@ -50,29 +50,29 @@ const First = new PriceScaleSource(2);
 const Second = new PriceScaleSource(3);
 const Third = new PriceScaleSource(1.5);
 
-const Chute = new Item(0, 0, "Chutes", "Time", [], [],false,Zeroth);
-const Crawler = new Item(1, 1, "Crawlers", "#0 chutes.", [1],[Chute],false,Zeroth);
-const Assembler = new Item(0, 1.25, "Assemblers", "#0 crawlers and #1 chutes.", [1, 12],[Crawler,Chute],false,First);
-const Depot = new Item(0, 1.5, "Depots","#0 crawlers and #1 chutes.", [2, 20],[Crawler,Chute],false,First);
-const GarishStatue = new Item(0, 1, "Garish_Statues","#0 depots, #1 assemblers, #2 crawlers, and #3 chutes.",[2,2,10,100],[Depot,Assembler,Crawler,Chute],false,First);
+const Chute = new Item(0, 0, "Chutes", "Time. A tough building material.", [], [],false,Zeroth);
+const Crawler = new Item(1, 1, "Crawlers", "#0 chutes. They find chutes.", [1],[Chute],false,Zeroth);
+const Assembler = new Item(0, 1.25, "Assemblers", "#0 crawlers and #1 chutes. They make crawlers.", [1, 12],[Crawler,Chute],false,First);
+const Depot = new Item(0, 1.5, "Depots","#0 crawlers and #1 chutes. They multiply crawler production.", [2, 20],[Crawler,Chute],false,First);
+const GarishStatue = new Item(0, 1, "Garish_Statues","#0 depots, #1 assemblers, #2 crawlers, and #3 chutes. They give a sense of completion.",[2,2,10,100],[Depot,Assembler,Crawler,Chute],false,First);
 
 const Exploration = new Item(0, 0, "Exploration","All my possessions.",[],[],false,Second);
-const Nature = new Item(0, 1, "Nature","#0 exploration. Things I build will not increase in cost nearly as quickly.",[1],[Exploration],true,Second);
-const Harmony = new Item(0, 1, "Harmony","#0 exploration. Each depot will make other depots more efficient, here.",[1],[Exploration],true,Second);
-const Haste = new Item(0, 1, "Haste","#0 exploration. All things will produce faster, here.",[1],[Exploration],true,Second);
-const Golem = new Item(0, 1, "Golems","#0 exploration. He will gather materials and help administrate crawlers.",[1],[Exploration],false,Second);
+const Nature = new Item(0, 1, "Nature","#0 exploration. More complex structures do not rise in cost as quickly.",[1],[Exploration],true,Second);
+const Harmony = new Item(0, 1, "Harmony","#0 exploration. Each depot will make other depots more efficient.",[1],[Exploration],true,Second);
+const Haste = new Item(0, 1, "Haste","#0 exploration. Decreases the amount of time it takes for assemblers and crawlers to work.",[1],[Exploration],true,Second);
+const Golem = new Item(0, 1, "Golems","#0 exploration. Acts as a depot and many crawlers.",[1],[Exploration],false,Second);
 
-const StrangeBox = new Item(0, 0, "Strange_Boxes","My knowledge.",[],[],true,Third);
-const Sigil = new Item(0, 0, "Sigils","A box.",[],[],false,Third);
+const StrangeBox = new Item(0, 0, "Strange_Boxes","My knowledge. More knowledge means more boxes.",[],[],true,Third);
+const Sigil = new Item(0, 0, "Sigils","A box for seven.",[],[],false,Third);
 const Shavings = new Item(0, 1, "Shavings","Time.",[],[],false,Third);
-const Cleerock = new Item(0, 1, "Cleerock","#0 shavings.",[5],[Shavings],false,Third);
-const Field = new Item(0, 1, "Fields","#0 sigil and #1 cleerock.",[1,1],[Sigil,Cleerock],false,Third);
-const Explorer = new Item(0, 2, "Explorers","#0 sigils.",[5],[Sigil],false,Third);
-const Conjuror = new Item(0, 1.5, "Conjurors","#0 sigils and #1 cleerock.",[1,3],[Sigil,Cleerock],false,Third);
-const Manufacturer = new Item(0, 10, "Manufacturers","#0 sigils and #1 cleerock.",[2,5],[Sigil,Cleerock],false,Third);
-const Analyzer = new Item(0, 3, "Analyzers","#0 cleerock, #1 sigils, and #2 shavings.",[2,1,20],[Cleerock,Sigil,Shavings],false,Third);
+const Cleerock = new Item(0, 1, "Cleerock","#0 shavings. Used to build things.",[5],[Shavings],false,Third);
+const Field = new Item(0, 1, "Fields","#0 sigil and #1 cleerock. Grows shavings.",[1,1],[Sigil,Cleerock],false,Third);
+const Explorer = new Item(0, 2, "Explorers","#0 sigils. Explores automatically.",[5],[Sigil],false,Third);
+const Conjuror = new Item(0, 1.5, "Conjurors","#0 sigils and #1 cleerock. Conjurors chutes based from other chutes.",[1,3],[Sigil,Cleerock],false,Third);
+const Manufacturer = new Item(0, 10, "Manufacturers","#0 sigils and #1 cleerock. Manufactures assemblers and depots.",[2,5],[Sigil,Cleerock],false,Third);
+const Analyzer = new Item(0, 3, "Analyzers","#0 cleerock, #1 sigils, and #2 shavings. Considers reality.",[2,1,20],[Cleerock,Sigil,Shavings],false,Third);
 
-const Insight = new Item(0, 0, "Insights","Time.",[],[],false,Third);
+const Insight = new Item(0, 0, "Insights","Time and thought.",[],[],false,Third);
 
 
 document.getElementById("Crawlers_Button").addEventListener("click", () => {ConstructionFunction(Crawler);});
@@ -104,6 +104,8 @@ let Crop = setInterval(Harvest, FieldTime);
 
 function AddResources() {
   let GatheringGain = Math.floor(Crawler.Count*(Math.pow(Depot.Count+Golem.Count, DepotBonus) + 1))+(Golem.Count*12);
+  Chute.Count += GatheringGain;
+  GatheringGain = Math.floor(Conjuror.Count*Chute.Count*0.5)
   Chute.Count += GatheringGain;
   ValueUpdate([Chute]);
   for (let i = Assembler.Count; i > 0; i--) {
